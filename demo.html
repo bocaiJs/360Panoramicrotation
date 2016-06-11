@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		img{
+			position: absolute;
+		    top: 50%;
+		    left: 50%;
+		    width: 640px;
+		    height: 378px;
+		    margin-top: -189px;
+		    margin-left: -320px;
+		}
+		
+	</style>
+	<script type="text/javascript">
+         window.onload = function()
+         {
+         	var x = 0;
+         	var oImg = document.getElementById('img1');
+         	var aImg = document.getElementsByTagName('img');
+         	var lastImg = oImg;
+         	var timer = null;
+         	var iSpeed = 0;
+         	var lastX = 0;
+            
+            for(var i = 1 ;i<77;i++)
+            {
+            	(function(newImg)
+            		{
+                       var oImg = new Image();
+		            	oImg.onload = function()
+		            	{
+		                    newImg.src = this.src;
+		            	};
+		                oImg.src = 'img/miaov ('+i+').jpg';
+		                newImg.style.display = 'none';
+						document.body.appendChild(newImg);
+
+            		}
+            	)(document.createElement('img'));
+            };
+
+            document.onmousedown = function(ev)
+            {
+                var oEvent = ev || event ;
+                var disX = oEvent.clientX - x;
+                 clearInterval(timer);
+
+                document.onmousemove = function(ev)
+                {
+                   var oEvent = ev || event ;
+                   x =parseInt((oEvent.clientX -disX)/10);
+                   iSpeed = x*10- lastX;
+                   lastX = x;
+                   move();
+                   return false;
+
+                };
+                document.onmouseup = function()
+                {
+                	
+                	document.onmousemove =null;
+                	document.onmouseup = null;
+
+                	document.title = iSpeed;
+                	timer = setInterval(function()
+                		{
+                			x= -parseInt((x+iSpeed)/10);
+                			move();
+                		},0.1);
+                };
+                return false;
+            };
+            function move()
+            {   
+            	if(iSpeed > 0)
+            	{
+            		iSpeed --;
+            	}else if(iSpeed <0)
+            	{
+                    iSpeed ++;
+            	}else
+            	{
+            		clearInterval(timer);
+            	}
+            	var  l =-x;
+                   if(l >0)
+                   {
+                   	l =l%77;
+                   }else
+                    {
+                        l= 76+l%77;	
+                   }
+                   console.log(x+'---'+l);
+                   lastImg.style.display = 'none';
+                   aImg[l].style.display = 'block'
+                   lastImg = aImg[l];
+            };
+
+         };
+	</script>
+</head>
+<body>
+	
+		<img  id="img1" src="img/miaov (0).jpg">
+	
+</body>
+</html>
